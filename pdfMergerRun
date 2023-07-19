@@ -1,0 +1,38 @@
+import tkinter as tk
+from tkinter import filedialog
+from PyPDF2 import PdfMerger
+import webbrowser
+
+
+def merge_pdfs(pdfs):
+    merger = PdfMerger()
+
+    for pdf in pdfs:
+        merger.append(pdf)
+
+    # Write to a new file named 'combined.pdf'
+    output_file = "combined.pdf"
+    merger.write(output_file)
+    merger.close()
+
+    # Open the combined PDF
+    webbrowser.open_new(output_file)
+
+    print('PDFs merged successfully!')
+
+
+def open_file_dialog():
+    root = tk.Tk()  # Create a new Tkinter window
+    root.withdraw()  # Hide the Tkinter window
+
+    # Open a new file dialog and get the paths of the selected files
+    file_paths = filedialog.askopenfilenames(filetypes=[("PDF files", "*.pdf")])
+
+    if file_paths:
+        merge_pdfs(file_paths)
+    else:
+        print('No files selected.')
+
+
+# Start the file dialog
+open_file_dialog()
